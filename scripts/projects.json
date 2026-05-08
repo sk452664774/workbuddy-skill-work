@@ -1,0 +1,7 @@
+{
+    "P51": [
+        "http://10.80.251.92/prod-api/ruoyi-busi/v3/api-docs",
+        "http://10.80.251.92/prod-api/ruoyi-system/v3/api-docs",
+        "http://10.80.251.92/prod-api/ruoyi-file/v3/api-docs"
+    ]
+}
