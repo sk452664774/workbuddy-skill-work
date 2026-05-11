@@ -470,7 +470,7 @@ def sanitize_filename(name):
 
 
 def _lookup_ref(ref_str, schemas):
-    """解析 \$ref 字符串 #/components/schemas/Xxx 或 #/definitions/Xxx，返回 schema 定义"""
+    """解析 $ref 字符串 #/components/schemas/Xxx 或 #/definitions/Xxx，返回 schema 定义"""
     if not ref_str:
         return None
     ref_name = ref_str.split("/")[-1]
@@ -479,7 +479,7 @@ def _lookup_ref(ref_str, schemas):
 
 def _gen_schema_fields_table(schema, schemas, cols=3, required_list=None):
     """
-    递归生成 schema 字段的 Markdown 表格行，完整展开 \$ref 嵌套。
+    递归生成 schema 字段的 Markdown 表格行，完整展开 $ref 嵌套。
     cols=3 → 响应表 (字段|类型|描述)
     cols=4 → 请求体表 (字段|类型|必填|描述)
     cols=5 → 请求参数表 (字段|类型|必填|描述)，嵌套行占位位置列
@@ -555,7 +555,7 @@ def _gen_schema_fields_table(schema, schemas, cols=3, required_list=None):
 
 
 def cmd_direct_download(project_code, tag_filter, output_dir=None):
-    """直接模式：下载指定模块的所有接口为 .md 文件（包含完整的 \$ref 递归解析）"""
+    """直接模式：下载指定模块的所有接口为 .md 文件（包含完整的 $ref 递归解析）"""
     projs = load_projects()
     if project_code not in projs:
         print(f"❌ 项目 {project_code} 不存在")
