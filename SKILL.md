@@ -11,6 +11,11 @@ agent_created: true
 
 ---
 
+## Python 环境说明
+
+> 本 skill 内置了 `scripts/run.sh` 自动检测包装器，会在多台电脑上自动寻找可用的 Python 解释器。
+> 所有命令统一使用 `bash <SKILL_DIR>/scripts/run.sh xxx.py` 即可。
+
 ## 路径无关说明
 
 **所有脚本路径使用 `SKILL_DIR` 变量**，WorkBuddy 加载 skill 时会自动获取技能目录路径：
@@ -22,6 +27,7 @@ SKILL_DIR = <WorkBuddy 自动识别的 skill 目录>
        ├── projects.json         ← 项目→上游OpenAPI地址映射
        ├── query_api.py          ← 接口文档查询（--direct 模式无需 api-doc-server）
        ├── p50_api.py            ← P50 业务API直调（无需 MCP Server）
+       ├── run.sh                ← Python 自动检测包装器（跨电脑兼容）
        └── check-services.sh     ← 服务健康检查
 ```
 
@@ -45,31 +51,31 @@ SKILL_DIR = <WorkBuddy 自动识别的 skill 目录>
 
 ### 获取项目列表
 ```bash
-python <SKILL_DIR>/scripts/query_api.py --direct projects
+bash <SKILL_DIR>/scripts/run.sh query_api.py --direct projects
 ```
 
 ### 列出项目所有接口
 ```bash
-python <SKILL_DIR>/scripts/query_api.py --direct list <项目编号>
+bash <SKILL_DIR>/scripts/run.sh query_api.py --direct list <项目编号>
 ```
 
 ### 查询接口详情
 ```bash
 # 默认 direct 模式（直连上游 OpenAPI，无缓存）
-python <SKILL_DIR>/scripts/query_api.py --direct <项目编号> <功能名称>
+bash <SKILL_DIR>/scripts/run.sh query_api.py --direct <项目编号> <功能名称>
 
 # 指定模块过滤（同名接口多模块时）
-python <SKILL_DIR>/scripts/query_api.py --direct <项目编号> <功能名称> --tag "<模块名>"
+bash <SKILL_DIR>/scripts/run.sh query_api.py --direct <项目编号> <功能名称> --tag "<模块名>"
 
 ```
 
 ### 下载指定模块接口为 .md 文件
 ```bash
 # 下载到当前工作目录（自动创建以模块名命名的文件夹）
-python <SKILL_DIR>/scripts/query_api.py --direct download <项目编号> --tag "<模块名>"
+bash <SKILL_DIR>/scripts/run.sh query_api.py --direct download <项目编号> --tag "<模块名>"
 
 # 指定输出目录
-python <SKILL_DIR>/scripts/query_api.py --direct download <项目编号> --tag "<模块名>" --output "./my_docs"
+bash <SKILL_DIR>/scripts/run.sh query_api.py --direct download <项目编号> --tag "<模块名>" --output "./my_docs"
 ```
 
 每个接口保存为一个 `.md` 文件，文件名 = 接口 summary，包含方法、路径、参数、请求体、响应结构。
@@ -99,11 +105,11 @@ python <SKILL_DIR>/scripts/query_api.py --direct download <项目编号> --tag "
 
 ```bash
 # 查询账号列表
-python <SKILL_DIR>/scripts/p50_api.py accounts list
-python <SKILL_DIR>/scripts/p50_api.py accounts list --keyword <关键词>
+bash <SKILL_DIR>/scripts/run.sh p50_api.py accounts list
+bash <SKILL_DIR>/scripts/run.sh p50_api.py accounts list --keyword <关键词>
 
 # 创建账号
-python <SKILL_DIR>/scripts/p50_api.py accounts create <工号> <姓名>
+bash <SKILL_DIR>/scripts/run.sh p50_api.py accounts create <工号> <姓名>
 ```
 
 ---
@@ -112,18 +118,18 @@ python <SKILL_DIR>/scripts/p50_api.py accounts create <工号> <姓名>
 
 ```bash
 # 查询周报
-python <SKILL_DIR>/scripts/p50_api.py reports list
-python <SKILL_DIR>/scripts/p50_api.py reports list --employee h2339
-python <SKILL_DIR>/scripts/p50_api.py reports list --start 2026-04-01 --end 2026-04-30
+bash <SKILL_DIR>/scripts/run.sh p50_api.py reports list
+bash <SKILL_DIR>/scripts/run.sh p50_api.py reports list --employee h2339
+bash <SKILL_DIR>/scripts/run.sh p50_api.py reports list --start 2026-04-01 --end 2026-04-30
 
 # 创建周报（参数：工号 开始日期 结束日期 内容）
-python <SKILL_DIR>/scripts/p50_api.py reports create h2339 2026-04-21 2026-04-27 "本周工作内容..."
+bash <SKILL_DIR>/scripts/run.sh p50_api.py reports create h2339 2026-04-21 2026-04-27 "本周工作内容..."
 
 # 更新周报
-python <SKILL_DIR>/scripts/p50_api.py reports update <id> 2026-04-21 2026-04-27 "更新内容"
+bash <SKILL_DIR>/scripts/run.sh p50_api.py reports update <id> 2026-04-21 2026-04-27 "更新内容"
 
 # 删除周报
-python <SKILL_DIR>/scripts/p50_api.py reports delete <id>
+bash <SKILL_DIR>/scripts/run.sh p50_api.py reports delete <id>
 ```
 
 ---
@@ -132,16 +138,16 @@ python <SKILL_DIR>/scripts/p50_api.py reports delete <id>
 
 ```bash
 # 查询项目列表
-python <SKILL_DIR>/scripts/p50_api.py projects list
+bash <SKILL_DIR>/scripts/run.sh p50_api.py projects list
 
 # 新建项目
-python <SKILL_DIR>/scripts/p50_api.py projects create P99 "新项目" "项目描述"
+bash <SKILL_DIR>/scripts/run.sh p50_api.py projects create P99 "新项目" "项目描述"
 
 # 编辑项目
-python <SKILL_DIR>/scripts/p50_api.py projects update <id> "新名称" "新描述"
+bash <SKILL_DIR>/scripts/run.sh p50_api.py projects update <id> "新名称" "新描述"
 
 # 删除项目
-python <SKILL_DIR>/scripts/p50_api.py projects delete <id>
+bash <SKILL_DIR>/scripts/run.sh p50_api.py projects delete <id>
 ```
 
 ---
@@ -150,25 +156,25 @@ python <SKILL_DIR>/scripts/p50_api.py projects delete <id>
 
 ```bash
 # 查所有需求（不指定项目）
-python <SKILL_DIR>/scripts/p50_api.py requirements list
+bash <SKILL_DIR>/scripts/run.sh p50_api.py requirements list
 
 # 按项目查
-python <SKILL_DIR>/scripts/p50_api.py requirements list --project P51
+bash <SKILL_DIR>/scripts/run.sh p50_api.py requirements list --project P51
 
 # 按提交人查（查我的需求）
-python <SKILL_DIR>/scripts/p50_api.py requirements list --submitter h2339
+bash <SKILL_DIR>/scripts/run.sh p50_api.py requirements list --submitter h2339
 
 # 按状态筛选
-python <SKILL_DIR>/scripts/p50_api.py requirements list --status "进行中"
+bash <SKILL_DIR>/scripts/run.sh p50_api.py requirements list --status "进行中"
 
 # 新建需求
-python <SKILL_DIR>/scripts/p50_api.py requirements create P51 h2339 --name "需求名称" --desc "需求描述"
+bash <SKILL_DIR>/scripts/run.sh p50_api.py requirements create P51 h2339 --name "需求名称" --desc "需求描述"
 
 # 编辑需求状态
-python <SKILL_DIR>/scripts/p50_api.py requirements update <id> --status "已完成"
+bash <SKILL_DIR>/scripts/run.sh p50_api.py requirements update <id> --status "已完成"
 
 # 删除需求
-python <SKILL_DIR>/scripts/p50_api.py requirements delete <id>
+bash <SKILL_DIR>/scripts/run.sh p50_api.py requirements delete <id>
 ```
 
 ---
